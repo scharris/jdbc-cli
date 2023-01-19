@@ -1,0 +1,4 @@
+jdbc.driverClassName=oracle.jdbc.OracleDriver
+jdbc.url=jdbc:oracle:thin:@<host>:<port>/<service-name>
+jdbc.username=<schema>
+jdbc.password=<password>

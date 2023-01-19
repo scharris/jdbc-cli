@@ -1,0 +1,31 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+  <id>dist</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <formats>
+    <format>tgz</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>src/assembly/jdbc-cli</directory>
+      <outputDirectory>jdbc-cli</outputDirectory>
+      <includes>
+        <include>**</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>jdbc-cli</outputDirectory>
+      <includes>
+        <include>README.md</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <files>
+    <file>
+      <source>target/${project.build.finalName}-jar-with-dependencies.jar</source>
+      <outputDirectory>jdbc-cli</outputDirectory>
+      <destName>jdbc-cli.jar</destName>
+    </file>
+  </files>
+</assembly>
