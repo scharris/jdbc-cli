@@ -10,6 +10,12 @@ With inline SQL, write CSV output to standard output:
  java -jar jdbc-cli.jar jdbc.props --query "select 2+2 as four, 'hello, friend' as greeting"
  ```
 
+Output:
+ ```
+four,greeting
+4,"hello, friend"
+```
+
 With output file specified and output type (csv) determined implicitly:
 ```console
 java -jar jdbc-cli.jar jdbc.props --query "select * from drug" --output-file my-output.csv
