@@ -1,6 +1,10 @@
 # JDBC CLI
 
 A command line interface for executing simple database operations (currently just queries) via JDBC.
+JDBC drivers for Oracle and PostgreSQL datqabases are included in the jar. For other databases,
+add the proper jdbc driver to the classpath via `-cp` option to the `java` command.
+
+Requires Java 17+ to run.
 
 ## Run
 
@@ -57,6 +61,16 @@ java -jar jdbc-cli.jar jdbc.props --query-file my-query.sql --output-type tsv --
 
 ## Build
 
-```
+Build a runnable jar (via `java -jar`) but without any JDBC driver included.
+
+```console
 mvn clean package
+```
+
+Use profile `ora` and/or `pg` to include Oracle and/or Postgres jdbc drivers in the
+jar. For example, to build a runnable jar with both PostgreSQL and Oracle drivers
+included:
+
+```console
+mvn clean package -Pora,pg
 ```

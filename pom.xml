@@ -36,19 +36,6 @@
       <groupId>org.jdbi</groupId>
       <artifactId>jdbi3-core</artifactId>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 -->
-    <dependency>
-      <groupId>com.oracle.database.jdbc</groupId>
-      <artifactId>ojdbc11-production</artifactId>
-      <version>${ora.jdbc.version}</version>
-      <type>pom</type>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>${pg.jdbc.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.univocity</groupId>
       <artifactId>univocity-parsers</artifactId>
@@ -107,7 +94,7 @@
           </annotationProcessors>
           <compilerArgs>
             <!-- checkerframework args -->
-            <!-- <arg>-Awarns</arg> -->            <!-- -Awarns turns type-checking errors into warnings. -->
+            <!-- <arg>-Awarns</arg> -->       <!-- -Awarns turns type-checking errors into warnings. -->
             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
@@ -117,7 +104,7 @@
             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
             <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-            <arg>-AskipDefs=MapperImpl$</arg>            <!-- Prevent nullness checking on MapStruct generated mappers. -->
+            <arg>-AskipDefs=MapperImpl$</arg> <!-- Prevent nullness checking on MapStruct generated mappers. -->
           </compilerArgs>
         </configuration>
       </plugin>
@@ -159,4 +146,29 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>ora</id>
+      <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 -->
+        <dependency>
+          <groupId>com.oracle.database.jdbc</groupId>
+          <artifactId>ojdbc11-production</artifactId>
+          <version>${ora.jdbc.version}</version>
+          <type>pom</type>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>pg</id>
+      <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>${pg.jdbc.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
