@@ -1,12 +1,31 @@
 # JDBC CLI
 
 A command line interface for executing simple database operations (currently just queries) via JDBC.
-JDBC drivers for Oracle and PostgreSQL datqabases are included in the jar. For other databases,
-add the proper jdbc driver to the classpath via `-cp` option to the `java` command.
 
 Requires Java 17+ to run.
 
-## Run
+## Examples
+With inline SQL, write CSV output to standard output:
+```console
+ java -jar jdbc-cli.jar jdbc.props --query "select 2+2 as four, 'hello, friend' as greeting"
+ ```
+
+With output file specified and output type (csv) determined implicitly:
+```console
+java -jar jdbc-cli.jar jdbc.props --query "select * from drug" --output-file my-output.csv
+```
+
+With both output file and output type specified:
+```console
+java -jar jdbc-cli.jar jdbc.props --query "select * from drug" --output-file my-output --output-type tsv
+```
+With SQL from file and tsv output to standard output with no header row:
+```console
+echo "select * from drug where id > 2" >> my-query.sql
+java -jar jdbc-cli.jar jdbc.props --query-file my-query.sql --output-type tsv --header false
+```
+
+## Parameters and options
 
 ```console
 java -jar jdbc-cli.jar [options] <jdbc-props-file>
@@ -36,27 +55,6 @@ java -jar jdbc-cli.jar [options] <jdbc-props-file>
     --header <true|false>
       Whether to write a columns header row to output. Optional with
       default of true.
-```
-
-### Examples
-With inline SQL, write CSV output to standard output:
-```console
- java -jar jdbc-cli.jar jdbc.props --query "select 2+2 as four, 'hello, friend' as greeting"
- ```
-
-With output file specified and output type (csv) determined implicitly:
-```console
-java -jar jdbc-cli.jar jdbc.props --query "select * from drug" --output-file my-output.csv
-```
-
-With both output file and output type specified:
-```console
-java -jar jdbc-cli.jar jdbc.props --query "select * from drug" --output-file my-output --output-type tsv
-```
-With SQL from file and tsv output to standard output with no header row:
-```console
-echo "select * from drug where id > 2" >> my-query.sql
-java -jar jdbc-cli.jar jdbc.props --query-file my-query.sql --output-type tsv --header false
 ```
 
 ## Build
