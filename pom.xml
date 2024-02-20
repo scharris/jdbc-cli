@@ -122,7 +122,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>gov.fda.QueryProcessor</mainClass>
+                  <mainClass>gov.fda.StatementProcessor</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>

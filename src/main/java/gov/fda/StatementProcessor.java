@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jdbi.v3.core.Jdbi;
@@ -23,7 +24,7 @@ import com.univocity.parsers.tsv.TsvWriterSettings;
 
 import static gov.fda.Args.*;
 
-public record QueryProcessor
+public record StatementProcessor
   (
     int fetchSize,
     OutputType outputType,
@@ -44,6 +45,8 @@ public record QueryProcessor
     "    --header <true|false>: Whether to write a columns header row to output. Optional, default is true.\n";
 
   enum OutputType { CSV, TSV }
+
+  static final Pattern queryPattern = Pattern.compile("^\\s*(select|with)\\b", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 
   public static void main(String[] args)
   {
@@ -80,13 +83,16 @@ public record QueryProcessor
 
     try
     {
-      var queryProcessor = new QueryProcessor(fetchSize, outputType, includeColsHeader);
+      var stmtProcessor = new StatementProcessor(fetchSize, outputType, includeColsHeader);
 
       String sql = sqlText != null ? sqlText : Files.readString(nn(sqlFile, "query file"));
 
       Jdbi jdbi = createJdbi(jdbcPropsFile);
 
-      queryProcessor.processQuery(jdbi, sql, outputFile);
+      if (queryPattern.matcher(sql).find())
+        stmtProcessor.processQuery(jdbi, sql, outputFile);
+      else
+        stmtProcessor.processUpdate(jdbi, sql);
 
       System.exit(0);
     }
@@ -134,6 +140,18 @@ public record QueryProcessor
       xsvWriter.close();
     }
     catch(Exception e) { throw new RuntimeException(e); }
+  }
+
+  private void processUpdate
+    (
+      Jdbi jdbi,
+      String sql
+    )
+  {
+    jdbi.useHandle(db -> {
+      int updated = db.createUpdate(sql).execute();
+      System.out.println("Update(s) completed with " + updated + " records affected.");
+    });
   }
 
   private void writeColumnsHeader
